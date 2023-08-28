@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "Vue.volar",
+    "dbaeumer.vscode-eslint",
+    "syler.sass-indented",
+    "christian-kohler.npm-intellisense",
+    "ecmel.vscode-html-css",
+    "editorconfig.editorconfig",
+    "tauri-apps.tauri-vscode",
+    "rust-lang.rust-analyzer"
+  ]
+}
