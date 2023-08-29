@@ -10,9 +10,14 @@
     "tauri": "tauri"
   },
   "devDependencies": {
+    "@goldenwere/types.gallery": "git+https://github.com/Goldenwere/types.gallery",
     "@tauri-apps/api": "1.4.0",
     "@tauri-apps/cli": "1.4.0",
+    "@types/dompurify": "^3.0.2",
+    "@types/js-yaml": "^4.0.5",
     "@vitejs/plugin-vue": "4.3.3",
+    "dompurify": "^3.0.3",
+    "js-yaml": "^4.1.0",
     "pinia": "2.1.6",
     "pug": "3.0.2",
     "sass": "1.66.1",
