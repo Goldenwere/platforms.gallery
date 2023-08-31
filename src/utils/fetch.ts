@@ -2,7 +2,7 @@
 
 import yaml from 'js-yaml'
 import DOMPurify from 'dompurify'
-import { readTextFile } from '@tauri-apps/api/fs';
+import { readTextFile, writeTextFile } from '@tauri-apps/api/fs'
 
 /**
  * Config used for DOMPurify.
@@ -136,28 +136,6 @@ export const awaitCondition = (condition: () => boolean, interval: number = 100,
   })
 }
 
-/**
- * Methods related to local storage
- */
-export const storage = {
-  /**
-   * Retrieves a value from local storage
-   * @param key the key of the local storage item
-   * @returns the parsed object or null
-   */
-  read: <T>(key: string) => {
-    const value = window.localStorage.getItem(key)
-    return !!value
-      ? JSON.parse(value) as T
-      : null
-  },
-
-  /**
-   * Stores a value to local storage
-   * @param key the key of the local storage item
-   * @param value the object to store
-   */
-  write: <T>(key: string, value: T) => {
-    window.localStorage.setItem(key, JSON.stringify(value))
-  },
+export const writeYaml = (content: object, to: string) => {
+  return writeTextFile(to, yaml.dump(content))
 }
