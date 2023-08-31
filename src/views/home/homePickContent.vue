@@ -10,6 +10,7 @@ const emit = defineEmits<{
 
 const store = useStore()
 const validContentDirectory = ref('Not Loaded')
+const createDirectory = ref('')
 
 const onPickContent = async (event: Event) => {
   const folderPath = await open({
@@ -29,8 +30,29 @@ const onPickContent = async (event: Event) => {
   }
 }
 
-const onCreateContent = async (event: Event) => {
+const onCreateContent = async (event: Event, action: string) => {
   event.preventDefault()
+  validContentDirectory.value = 'Not Loaded'
+  if (createDirectory.value === '' || action === 'no') {
+    const folderPath = await open({
+      directory: true,
+      multiple: false,
+    })
+    if (folderPath as string !== null) {
+      createDirectory.value = folderPath as string
+    } else {
+      validContentDirectory.value = 'No directory selected'
+    }
+  } else if (action === 'yes') {
+    store.$patch({
+      managedContentDirectory: createDirectory.value,
+      loadedApp: {},
+      loadedHome: {},
+    })
+    emit('contentLoaded')
+  } else {
+    createDirectory.value = ''
+  }
 }
 </script>
 
@@ -41,7 +63,9 @@ section#pick-content
   p(
     v-if='validContentDirectory !== "Not Loaded"'
   ) Error with selected directory: {{ validContentDirectory }}
-  .form
+  .form(
+    v-if='createDirectory === ""'
+  )
     button.gw-input-element(
       @click='onPickContent($event)'
     )
@@ -50,6 +74,19 @@ section#pick-content
       @click='onCreateContent($event)'
     )
       span Create New Directory
+  .form(
+    v-else
+  )
+    p Is {{ createDirectory + '/content' }} ok?
+    button.gw-input-element(
+      @click='onCreateContent($event, "yes")'
+    ) Yes (Create)
+    button.gw-input-element(
+      @click='onCreateContent($event, "no")'
+    ) No (Pick Again)
+    button.gw-input-element(
+      @click='onCreateContent($event, "cancel")'
+    ) Cancel (Go Back to Options)
 </template>
 
 <style scoped lang="sass">
