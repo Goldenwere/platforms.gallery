@@ -1,7 +1,17 @@
-import { exists } from '@tauri-apps/api/fs';
+import { exists, createDir, writeTextFile } from '@tauri-apps/api/fs';
+import yaml from 'js-yaml'
 import type { AppViewModel, HomeViewModel } from '@goldenwere/types.gallery'
 import { fetchAndParseYaml } from 'src/utils/fetch'
-import { APP_CONFIG, BASE_THEME, HOME_CONFIG } from './constants'
+import { APP_CONFIG, BASE_THEME, CONTENT_DIRECTORY, HOME_CONFIG } from './constants'
+
+export const newApp: AppViewModel = {
+  directories: [],
+  title: 'new gallery app',
+}
+
+export const newHome: HomeViewModel = {
+  copyrightNotice: `Copyright {YOU} (C) ${new Date().getFullYear()}`
+}
 
 export interface ContentDirectoryInfo {
   validContentDirectory: ContentDirectoryResponse,
@@ -65,4 +75,37 @@ export const validateContentDirectory = async (path: string | string[] | null): 
   }
 
   return { validContentDirectory: 'Directory Error' }
+}
+
+export const createNewDirectory = async (path: string) => {
+  return new Promise<ContentDirectoryInfo>((resolve, reject) => {
+    createDir(`${path}/${CONTENT_DIRECTORY}`)
+    .catch(err => reject(err))
+    .then(_ => {
+      let newAppContent = yaml.dump(newApp)
+
+      return writeTextFile(`${path}/${CONTENT_DIRECTORY}/${APP_CONFIG}`, newAppContent)
+    })
+    .catch(err => reject(err))
+    .then(_ => {
+      let newHomeContent = yaml.dump(newHome)
+
+      return writeTextFile(`${path}/${CONTENT_DIRECTORY}/${HOME_CONFIG}`, newHomeContent)
+    })
+    .catch(err => reject(err))
+    .then(_ => {
+      return writeTextFile(`${path}/${CONTENT_DIRECTORY}/${BASE_THEME}`, '')
+    })
+    .catch(err => reject(err))
+    .then(_ => {
+      resolve({
+        validContentDirectory: 'Valid',
+        validHomeConfig: true,
+        validThemeConfig: true,
+        appResponse: { ...newApp },
+        homeResponse: { ...newHome },
+      })
+    })
+    .catch(err => reject(err))
+  })
 }

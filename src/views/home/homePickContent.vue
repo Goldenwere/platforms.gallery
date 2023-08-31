@@ -2,7 +2,7 @@
 import { open } from '@tauri-apps/api/dialog'
 import { ref } from 'vue'
 import { useStore } from 'src/store'
-import { validateContentDirectory } from 'src/utils/platform'
+import { createNewDirectory, validateContentDirectory } from 'src/utils/platform'
 
 const emit = defineEmits<{
   (e: 'contentLoaded'): void,
@@ -44,12 +44,18 @@ const onCreateContent = async (event: Event, action: string) => {
       validContentDirectory.value = 'No directory selected'
     }
   } else if (action === 'yes') {
-    store.$patch({
-      managedContentDirectory: createDirectory.value,
-      loadedApp: {},
-      loadedHome: {},
+    createNewDirectory(createDirectory.value)
+    .then(value => {
+      store.$patch({
+        managedContentDirectory: createDirectory.value,
+        loadedApp: value.appResponse,
+        loadedHome: value.homeResponse,
+      })
+      emit('contentLoaded')
     })
-    emit('contentLoaded')
+    .catch(err => {
+      validContentDirectory.value = err.toString()
+    })
   } else {
     createDirectory.value = ''
   }
