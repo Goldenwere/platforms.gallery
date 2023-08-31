@@ -1,38 +1,16 @@
 <script setup lang="ts">
-import { type AppViewModel } from '@goldenwere/types.gallery'
 import { ref } from 'vue';
-import { useStore } from '../../store';
-import { fetchAndParseYaml } from '../../utils/fetch';
-import { open } from '@tauri-apps/api/dialog';
+import { useStore } from 'src/store';
+
+import HomePickContent from './homePickContent.vue'
 
 const store = useStore()
+const appContent = ref(store.loadedApp)
+const loaded = ref(false)
 
-const selected = ref(!!store.managedApp)
-const loaded = ref(null as AppViewModel | null)
-
-const pickFile = async (event: Event) => {
-  event.preventDefault()
-
-  const filePath = await open({
-    filters: [{
-      name: 'YAML',
-      extensions: ['yml', 'yaml']
-    }]
-  })
-
-  if (!!filePath) {
-    store.$patch({ managedApp: filePath as string })
-    console.log(filePath)
-
-    const loadedYaml = await fetchAndParseYaml(filePath as string) as AppViewModel
-
-    console.log(loadedYaml)
-
-    if (!!loadedYaml.title && !!loadedYaml.directories) {
-      selected.value = true
-      loaded.value = loadedYaml
-    }
-  }
+const onContentLoaded = () => {
+  appContent.value = store.loadedApp
+  loaded.value = true
 }
 </script>
 
@@ -40,10 +18,9 @@ const pickFile = async (event: Event) => {
 div(
   v-if='!loaded'
 )
-  button(
-    @click='pickFile'
+  HomePickContent(
+    @contentLoaded='onContentLoaded()'
   )
-    span Pick File
 div(
   v-else
 )
@@ -53,7 +30,7 @@ div(
     ) Title
     input(
       type='text'
-      :value="loaded.title"
+      :value="appContent.title"
     )
   .input-container
     label(
@@ -61,7 +38,7 @@ div(
     ) Subtitle
     input(
       type='text'
-      :value='loaded.subtitle'
+      :value='appContent.subtitle'
     )
 </template>
 

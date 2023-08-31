@@ -83,9 +83,9 @@ export const fetchAndReturnText = async (path: string) => {
  * @param path the path of the YAML file to load
  * @returns the content of the YAML file after sanitizing then parsing
  */
-export const fetchAndParseYaml = async (path: string) => {
+export const fetchAndParseYaml = async<T> (path: string) => {
   const text = await fetchAndReturnText(path)
-  return yaml.load(text)
+  return yaml.load(text) as T
 }
 
 /**
