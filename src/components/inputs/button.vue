@@ -5,7 +5,7 @@ defineEmits<{
 </script>
 
 <template lang="pug">
-button.gw-input.gw-input-container(
+button.gw-input.gw-input-container.gw-button(
   @click='$emit("click", $event)'
 )
   slot

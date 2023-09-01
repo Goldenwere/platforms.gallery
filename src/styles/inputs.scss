@@ -33,6 +33,15 @@
   }
 }
 
-button.gw-input {
+.gw-button {
   display: inline;
+}
+
+.gw-text-field {
+  flex-direction: column;
+  padding: unset;
+
+  input {
+    padding: var(--gw-input-padding);
+  }
 }
