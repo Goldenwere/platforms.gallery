@@ -1,0 +1,17 @@
+body {
+  background: var(--gw-bg);
+  color: var(--gw-fg);
+  height: calc(100vh - 2em);
+  padding: 1em;
+  width: calc(100vw - 2em);
+
+  * {
+    transition-duration: var(--gw-transition-duration);
+    transition-timing-function: var(--gw-transition-fn);
+    transition-property: background, color, transform;
+  }
+}
+
+h2 {
+  margin-top: 0;
+}

@@ -1,0 +1,27 @@
+:root {
+  --gw-bg: rgb(238, 238, 238);
+  --gw-fg: rgb(30, 30, 30);
+  --gw-transition-fn: cubic-bezier(0, 0.8, 0.2, 1);
+  --gw-transition-duration: 0.5s;
+
+  --gw-input-spacing: 0.5em;
+  --gw-input-padding: 0.5em 1em;
+  --gw-input-margin: 0.25em;
+
+  --gw-input-bg: rgb(238, 238, 238);
+  --gw-input-border: 1px solid rgb(50, 50, 50);
+  --gw-input-round: 0.25em;
+  --gw-input-fg: rgb(50, 50, 50);
+
+  --gw-input-bg-focus: rgb(254, 207, 89);
+  --gw-input-border-focus: 1px solid rgb(0, 0, 0);
+  --gw-input-fg-focus: rgb(0, 0, 0);
+
+  --gw-input-bg-hover: rgb(254, 254, 254);
+  --gw-input-border-hover: 1px solid rgb(0, 0, 0);
+  --gw-input-fg-hover: rgb(12, 132, 171);
+
+  --gw-input-bg-active: rgb(140, 211, 234);
+  --gw-input-border-active: 1px solid rgb(12, 132, 171);
+  --gw-input-fg-active: rgb(4, 67, 89);
+}
