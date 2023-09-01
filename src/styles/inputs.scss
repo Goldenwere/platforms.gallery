@@ -1,0 +1,38 @@
+.gw-input-container {
+  box-sizing: border-box;
+  display: flex;
+  gap: var(--gw-input-spacing);
+  margin: var(--gw-input-margin);
+  padding: var(--gw-input-padding);
+}
+
+.gw-input {
+  background-color: var(--gw-input-bg);
+  border: none;
+  border-radius: var(--gw-input-round);
+  box-sizing: border-box;
+  color: var(--gw-input-fg);
+  outline: var(--gw-input-border);
+
+  &:focus {
+    background-color: var(--gw-input-bg-focus);
+    color: var(--gw-input-fg-focus);
+    outline: var(--gw-input-border-focus);
+  }
+
+  &:hover {
+    background-color: var(--gw-input-bg-hover);
+    color: var(--gw-input-fg-hover);
+    outline: var(--gw-input-border-hover);
+  }
+
+  &:active {
+    background-color: var(--gw-input-bg-active);
+    color: var(--gw-input-fg-active);
+    outline: var(--gw-input-border-active);
+  }
+}
+
+button.gw-input {
+  display: inline;
+}
