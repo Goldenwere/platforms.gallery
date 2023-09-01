@@ -8,6 +8,7 @@ import { writeYaml } from 'src/utils/fetch'
 import { APP_CONFIG } from 'src/utils/constants'
 
 import GwButton from 'src/components/inputs/button.vue'
+import GwTextField from 'src/components/inputs/textField.vue'
 
 const store = useStore()
 const router = useRouter()
@@ -39,24 +40,16 @@ section#app-editor
     v-if='error !== ""'
   ) Error: {{ error }}
   .form
-    .gw-input-container.gw-text-field
-      label(
-        for="app title"
-      ) Title
-      input(
-        type='text'
-        name='app title'
-        v-model="appContent.title"
-      )
-    .gw-input-container.gw-text-field
-      label(
-        for="app subtitle"
-      ) Subtitle
-      input(
-        type='text'
-        name='app subtitle'
-        v-model="appContent.subtitle"
-      )
+    GwTextField(
+      label='Title'
+      name='app title'
+      v-model='appContent.title'
+    )
+    GwTextField(
+      label='Subtitle'
+      name='app subtitle'
+      v-model='appContent.subtitle'
+    )
     GwButton(
       @click='onSave($event)'
     )
@@ -68,5 +61,9 @@ section#app-editor
 </template>
 
 <style scoped lang="sass">
-
+#app-editor
+  .form
+    border: var(--gw-input-border)
+    border-radius: var(--gw-input-round)
+    padding: var(--gw-input-spacing)
 </style>
