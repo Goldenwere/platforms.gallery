@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 
+import GwButton from 'src/components/inputs/button.vue'
+
 const router = useRouter()
 
 const goTo = (event: Event, name: string) => {
@@ -13,7 +15,7 @@ const goTo = (event: Event, name: string) => {
 section#home-menu
   h2 Home
   .menu-grid
-    button.gw-input-element(
+    GwButton(
       @click='goTo($event, "appEditor")'
     )
       span Configure App

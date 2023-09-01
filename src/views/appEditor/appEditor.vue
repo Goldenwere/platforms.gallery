@@ -7,6 +7,8 @@ import { useStore } from 'src/store'
 import { writeYaml } from 'src/utils/fetch'
 import { APP_CONFIG } from 'src/utils/constants'
 
+import GwButton from 'src/components/inputs/button.vue'
+
 const store = useStore()
 const router = useRouter()
 const appContent = reactive(store.loadedApp as AppViewModel)
@@ -14,8 +16,6 @@ const error = ref('')
 
 const onSave = (event: Event) => {
   event.preventDefault()
-  console.log(appContent)
-  console.log(`${store.managedContentDirectory}/${APP_CONFIG}`)
   writeYaml(appContent, `${store.managedContentDirectory}/${APP_CONFIG}`)
   .catch((err) => error.value = err)
   .then(() => {
@@ -57,11 +57,11 @@ section#app-editor
         name='app subtitle'
         v-model="appContent.subtitle"
       )
-    button.gw-input-element(
+    GwButton(
       @click='onSave($event)'
     )
       span Save
-    button.gw-input-element(
+    GwButton(
       @click='onCancel($event)'
     )
       span Cancel

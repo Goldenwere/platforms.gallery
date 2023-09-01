@@ -3,6 +3,7 @@ import { open } from '@tauri-apps/api/dialog'
 import { ref } from 'vue'
 import { useStore } from 'src/store'
 import { createNewDirectory, validateContentDirectory } from 'src/utils/platform'
+import GwButton from 'src/components/inputs/button.vue'
 
 const emit = defineEmits<{
   (e: 'contentLoaded'): void,
@@ -72,11 +73,11 @@ section#pick-content
   .form(
     v-if='createDirectory === ""'
   )
-    button.gw-input-element(
+    GwButton(
       @click='onPickContent($event)'
     )
       span Choose Existing Directory
-    button.gw-input-element(
+    GwButton(
       @click='onCreateContent($event)'
     )
       span Create New Directory
@@ -84,13 +85,13 @@ section#pick-content
     v-else
   )
     p Is {{ createDirectory + '/content' }} ok?
-    button.gw-input-element(
+    GwButton(
       @click='onCreateContent($event, "yes")'
     ) Yes (Create)
-    button.gw-input-element(
+    GwButton(
       @click='onCreateContent($event, "no")'
     ) No (Pick Again)
-    button.gw-input-element(
+    GwButton(
       @click='onCreateContent($event, "cancel")'
     ) Cancel (Go Back to Options)
 </template>
