@@ -13,5 +13,7 @@
 </template>
 
 <style scoped lang="sass">
-
+#entry
+  max-width: 48em
+  margin: auto
 </style>
