@@ -49,6 +49,8 @@ const onPickFavicon = async (event: Event) => {
   }) as unknown as string | null
   if (!!tempPathToFavicon.value) {
     tempDataOfFavicon.value = (await fetchAndReturnImageBlob(tempPathToFavicon.value)).toString()
+    const split = tempPathToFavicon.value.split('/')
+    appContent.faviconUrl = `/${split[split.length - 1]}`
   }
 }
 
@@ -65,6 +67,8 @@ const onPickLogo = async (event: Event) => {
   }) as unknown as string | null
   if (!!tempPathToLogo.value) {
     tempDataOfLogo.value = (await fetchAndReturnImageBlob(tempPathToLogo.value)).toString()
+    const split = tempPathToLogo.value.split('/')
+    appContent.logo = `/${split[split.length - 1]}`
   }
 }
 </script>
@@ -86,31 +90,51 @@ section#app-editor
       name='app subtitle'
       v-model='appContent.subtitle'
     )
-    .form-container
+    .gw-input-container.form-container.image-picker
       label Favicon
       GwButton(
         @click='onPickFavicon($event)'
       )
         span Select File
-      img(
+      .selected-image(
         v-if='!!tempDataOfFavicon'
-        :src='tempDataOfFavicon'
-        alt='selected favicon'
       )
+        p The path for this will become {{ store.managedContentDirectory }}{{ appContent.faviconUrl }}
+        GwTextField(
+          label='Favicon'
+          name='app favicon'
+          v-model='appContent.faviconUrl'
+        )
+        .preview 
+          p Selected Favicon
+          img(
+            :src='tempDataOfFavicon'
+            alt='selected favicon'
+          )
       span(
         v-else
       ) No image selected
-    .form-container
+    .gw-input-container.form-container.image-picker
       label Logo
       GwButton(
         @click='onPickLogo($event)'
       )
         span Select File
-      img(
+      .selected-image(
         v-if='!!tempDataOfLogo'
-        :src='tempDataOfLogo'
-        alt='selected logo'
       )
+        p The path for this will become {{ store.managedContentDirectory }}{{ appContent.logo }}
+        GwTextField(
+          label='Logo'
+          name='app logo'
+          v-model='appContent.logo'
+        )
+        .preview
+          p Selected Logo
+          img(
+            :src='tempDataOfLogo'
+            alt='selected logo'
+          )
       span(
         v-else
       ) No image selected
@@ -126,9 +150,25 @@ section#app-editor
 </template>
 
 <style scoped lang="sass">
-#app-editor
-  .form
-    border: var(--gw-input-border)
-    border-radius: var(--gw-input-round)
-    padding: var(--gw-input-spacing)
+.form
+  border: var(--gw-input-border)
+  border-radius: var(--gw-input-round)
+  padding: var(--gw-input-spacing)
+
+.image-picker
+  border: var(--gw-input-border)
+  border-radius: var(--gw-input-round)
+  margin: var(--gw-input-spacing)
+  label
+    display: block
+  > label
+    margin: var(--gw-input-spacing)
+    margin-bottom: 0
+  .selected-image
+    p
+      margin: var(--gw-input-spacing)
+    img
+      display: block
+      max-width: 4em
+      max-height: 4em
 </style>
