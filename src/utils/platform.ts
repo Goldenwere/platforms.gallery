@@ -1,4 +1,4 @@
-import { exists, createDir, writeTextFile } from '@tauri-apps/api/fs';
+import { exists, createDir, writeTextFile, copyFile } from '@tauri-apps/api/fs';
 import yaml from 'js-yaml'
 import type { AppViewModel, HomeViewModel } from '@goldenwere/types.gallery'
 import { fetchAndParseYaml } from 'src/utils/fetch'
@@ -108,4 +108,8 @@ export const createNewDirectory = async (path: string) => {
     })
     .catch(err => reject(err))
   })
+}
+
+export const copyFilesToContent = async (toCopy: { from: string, to: string }[]) => {
+  return Promise.all(toCopy.map((other) => copyFile(other.from, other.to) ))
 }

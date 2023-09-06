@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { AppViewModel } from '@goldenwere/types.gallery'
 
 import { useStore } from 'src/store'
+import { copyFilesToContent } from 'src/utils/platform'
 import { fetchAndReturnImageBlob, openDialogPrompt, writeYaml } from 'src/utils/fetch'
 import { APP_CONFIG } from 'src/utils/constants'
 
@@ -19,9 +20,20 @@ const tempDataOfFavicon: Ref<string | null> = ref(null)
 const tempPathToLogo: Ref<string | null> = ref(null)
 const tempDataOfLogo: Ref<string | null> = ref(null)
 
-const onSave = (event: Event) => {
+const onSave = async (event: Event) => {
   event.preventDefault()
-  writeYaml(appContent, `${store.managedContentDirectory}/${APP_CONFIG}`)
+  const filesToCopy: { from: string, to: string }[] = []
+  if (!!tempPathToFavicon.value && !!appContent.faviconUrl) {
+    filesToCopy.push({ from: tempPathToFavicon.value, to: `${store.managedContentDirectory}${appContent.faviconUrl}` })
+  }
+  if (!!tempPathToLogo.value && !!appContent.logo) {
+    filesToCopy.push({ from: tempPathToLogo.value, to: `${store.managedContentDirectory}${appContent.logo}` })
+  }
+
+  Promise.all([
+    await copyFilesToContent(filesToCopy),
+    await writeYaml(appContent, `${store.managedContentDirectory}/${APP_CONFIG}`),
+  ])
   .catch((err) => error.value = err)
   .then(() => {
     store.$patch({
