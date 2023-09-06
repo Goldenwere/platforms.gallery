@@ -2,7 +2,8 @@
 
 import yaml from 'js-yaml'
 import DOMPurify from 'dompurify'
-import { readTextFile, writeTextFile } from '@tauri-apps/api/fs'
+import { open, type OpenDialogOptions } from '@tauri-apps/api/dialog'
+import { readBinaryFile, readTextFile,  writeTextFile } from '@tauri-apps/api/fs'
 
 /**
  * Config used for DOMPurify.
@@ -65,6 +66,19 @@ const domPurifyConfig = {
     'dl',
     'dt',
   ],
+}
+
+export const openDialogPrompt = async (options: OpenDialogOptions) => {
+  return open(options)
+}
+
+export const fetchAndReturnBinary = async (path: string) => {
+  return readBinaryFile(path)
+}
+
+export const fetchAndReturnImageBlob = async (path: string) => {
+  const binary = await fetchAndReturnBinary(path)
+  return URL.createObjectURL(new Blob([binary.buffer]))
 }
 
 /**
